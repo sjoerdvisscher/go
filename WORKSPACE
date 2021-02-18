@@ -11,15 +11,9 @@ add_go_repos()
 load("@bazel_rules_go//:def.bzl", "go_rules_deps")
 go_rules_deps()
 
-load("//bazel/docker:repos.bzl", "docker_repos")
-docker_repos()
-
-load("//bazel/docker:def.bzl", "docker_deps")
-docker_deps()
-
 git_repository(
     name = "golink",
-    commit = "v1.0.0",
+    tag = "v1.0.0",
     remote = "https://github.com/nikunjy/golink",
 )
 

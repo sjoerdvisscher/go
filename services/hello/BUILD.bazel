@@ -1,6 +1,4 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
-load("@io_bazel_rules_docker//go:image.bzl", "go_image")
-load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
 go_library(
     name = "go_default_library",
@@ -18,34 +16,5 @@ go_library(
 go_binary(
     name = "hello",
     embed = [":go_default_library"],
-    visibility = ["//visibility:public"],
-)
-
-go_image(
-    name = "base_image",
-    goarch = "amd64",
-    embed = [":go_default_library"],
-    visibility = ["//visibility:public"],
-)
-
-container_image(
-    name = "image",
-    base = ":base_image",
-    stamp = True,
-    visibility = ["//visibility:public"],
-)
-
-go_image(
-    name = "base_image_dev",
-    binary = "hello",
-    base = "@ubuntu16.04//image",
-    embed = [":go_default_library"],
-    visibility = ["//visibility:public"],
-)
-
-container_image(
-    name = "image_dev",
-    base = ":base_image_dev",
-    stamp = True,
     visibility = ["//visibility:public"],
 )

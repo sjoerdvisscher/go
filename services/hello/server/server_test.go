@@ -1,24 +1,20 @@
 package server
 
 import (
+	"context"
 	"fmt"
-	"io/ioutil"
-	"net/http/httptest"
 	"testing"
 
+	pb "github.com/nikunjy/go/protos/hello"
 	"github.com/stretchr/testify/require"
 )
 
 func TestHello(t *testing.T) {
-	srv := New(1123)
-	req := httptest.NewRequest("GET", "http://example.com/hello", nil)
-	w := httptest.NewRecorder()
-	srv.sayHello(w, req)
+	srv := &Server{}
+	req := &pb.GreetingRequest{Name: "Test"}
+	ctx := context.Background()
+	resp, _ := srv.Greet(ctx, req)
 
-	resp := w.Result()
-	body, _ := ioutil.ReadAll(resp.Body)
-
-	fmt.Println(resp.StatusCode)
-	fmt.Println(resp.Header.Get("Content-Type"))
-	require.EqualValues(t, "Hello!!", string(body))
+	fmt.Println(resp.Greeting)
+	require.EqualValues(t, "Hello Test", resp.Greeting)
 }
